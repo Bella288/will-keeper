@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Digital Will & Info Vault</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: #ddd;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tab.active {
+            background: white;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .instructions {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-bottom: 5px;
+                border-radius: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Digital Will & Important Info Vault</h1>
+            <p>Secure, client-side encrypted storage for your critical information</p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="encrypt">Encrypt Information</div>
+            <div class="tab" data-tab="decrypt">Decrypt Information</div>
+            <div class="tab" data-tab="instructions">Instructions</div>
+        </div>
+        
+        <div id="encrypt-tab" class="tab-content active">
+            <div class="card">
+                <h2>Enter Your Important Information</h2>
+                <p>All data is encrypted in your browser before storage. We never see or store your information on our servers.</p>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Your full legal name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="importantInfo">Important Information</label>
+                    <textarea id="importantInfo" placeholder="Enter all critical information you want to securely share with loved ones. This might include: bank accounts, insurance policies, digital account credentials, personal messages, etc."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="passphrase">Encryption Passphrase</label>
+                    <input type="password" id="passphrase" placeholder="Create a strong passphrase">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassphrase">Confirm Passphrase</label>
+                    <input type="password" id="confirmPassphrase" placeholder="Re-enter your passphrase">
+                </div>
+                
+                <button id="encryptBtn" class="btn-success">Encrypt Information</button>
+            </div>
+            
+            <div id="encryptedOutput" class="card hidden">
+                <h2>Your Encrypted Data</h2>
+                <div class="instructions">
+                    <p><strong>Important:</strong> Save this encrypted message and share it with your trusted contacts along with the passphrase (through a separate secure channel).</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="encryptedData">Encrypted Message</label>
+                    <textarea id="encryptedData" readonly></textarea>
+                </div>
+                
+                <button id="copyEncrypted">Copy to Clipboard</button>
+            </div>
+        </div>
+        
+        <div id="decrypt-tab" class="tab-content">
+            <div class="card">
+                <h2>Decrypt Information</h2>
+                <p>Paste an encrypted message and enter the passphrase to decrypt it.</p>
+                
+                <div class="form-group">
+                    <label for="encryptedInput">Encrypted Message</label>
+                    <textarea id="encryptedInput" placeholder="Paste the encrypted message here"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="decryptPassphrase">Passphrase</label>
+                    <input type="password" id="decryptPassphrase" placeholder="Enter the passphrase">
+                </div>
+                
+                <button id="decryptBtn">Decrypt Information</button>
+            </div>
+            
+            <div id="decryptedOutput" class="card hidden">
+                <h2>Decrypted Information</h2>
+                
+                <div class="form-group">
+                    <label for="decryptedData">Important Information</label>
+                    <textarea id="decryptedData" readonly></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div id="instructions-tab" class="tab-content">
+            <div class="card">
+                <h2>How To Use This Digital Will</h2>
+                
+                <div class="instructions">
+                    <h3>For the Person Creating the Will:</h3>
+                    <ol>
+                        <li>Go to the "Encrypt Information" tab</li>
+                        <li>Enter all your important information that loved ones might need</li>
+                        <li>Create a strong, memorable passphrase</li>
+                        <li>Click "Encrypt Information"</li>
+                        <li>Save the encrypted message that is generated</li>
+                        <li>Share the encrypted message with trusted contacts</li>
+                        <li>Share the passphrase separately through a secure channel (in person, secure messaging app, etc.)</li>
+                    </ol>
+                    
+                    <h3>For the Recipients:</h3>
+                    <ol>
+                        <li>Go to the "Decrypt Information" tab</li>
+                        <li>Paste the encrypted message you received</li>
+                        <li>Enter the passphrase (shared separately)</li>
+                        <li>Click "Decrypt Information" to view the contents</li>
+                    </ol>
+                    
+                    <h3>Security Notes:</h3>
+                    <ul>
+                        <li>All encryption/decryption happens in your browser - data is never sent to any server</li>
+                        <li>Use a strong, unique passphrase that you'll remember or store securely</li>
+                        <li>Share the passphrase through a different channel than the encrypted message</li>
+                        <li>Consider printing the encrypted message and storing it with other important documents</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>This tool provides client-side encryption for your important information. For maximum security, use offline when possible.</p>
+            <p>Remember to share the passphrase separately from the encrypted data.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show active content
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Encryption functionality
+            const encryptBtn = document.getElementById('encryptBtn');
+            if (encryptBtn) {
+                encryptBtn.addEventListener('click', async function() {
+                    const importantInfo = document.getElementById('importantInfo').value;
+                    const passphrase = document.getElementById('passphrase').value;
+                    const confirmPassphrase = document.getElementById('confirmPassphrase').value;
+                    const fullName = document.getElementById('fullName').value;
+                    
+                    // Basic validation
+                    if (!importantInfo || !passphrase || !confirmPassphrase) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+                    
+                    if (passphrase !== confirmPassphrase) {
+                        alert('Passphrases do not match');
+                        return;
+                    }
+                    
+                    if (passphrase.length < 8) {
+                        alert('Please use a passphrase with at least 8 characters');
+                        return;
+                    }
+                    
+                    try {
+                        // Create a complete data object with name and info
+                        const dataToEncrypt = JSON.stringify({
+                            name: fullName,
+                            info: importantInfo,
+                            timestamp: new Date().toISOString()
+                        });
+                        
+                        // Encrypt the data
+                        const encryptedData = await encryptData(dataToEncrypt, passphrase);
+                        
+                        // Display the encrypted output
+                        document.getElementById('encryptedData').value = encryptedData;
+                        document.getElementById('encryptedOutput').classList.remove('hidden');
+                    } catch (error) {
+                        console.error('Encryption error:', error);
+                        alert('Error during encryption. Please try again.');
+                    }
+                });
+            }
+            
+            // Copy to clipboard functionality
+            const copyEncrypted = document.getElementById('copyEncrypted');
+            if (copyEncrypted) {
+                copyEncrypted.addEventListener('click', function() {
+                    const encryptedData = document.getElementById('encryptedData');
+                    encryptedData.select();
+                    document.execCommand('copy');
+                    alert('Copied to clipboard!');
+                });
+            }
+            
+            // Decryption functionality
+            const decryptBtn = document.getElementById('decryptBtn');
+            if (decryptBtn) {
+                decryptBtn.addEventListener('click', async function() {
+                    const encryptedInput = document.getElementById('encryptedInput').value;
+                    const decryptPassphrase = document.getElementById('decryptPassphrase').value;
+                    
+                    if (!encryptedInput || !decryptPassphrase) {
+                        alert('Please provide both the encrypted message and passphrase');
+                        return;
+                    }
+                    
+                    try {
+                        // Decrypt the data
+                        const decryptedData = await decryptData(encryptedInput, decryptPassphrase);
+                        
+                        // Parse the JSON data
+                        const parsedData = JSON.parse(decryptedData);
+                        
+                        // Display the decrypted output
+                        let displayText = '';
+                        if (parsedData.name) {
+                            displayText += `From: ${parsedData.name}\n\n`;
+                        }
+                        if (parsedData.timestamp) {
+                            displayText += `Created: ${new Date(parsedData.timestamp).toLocaleString()}\n\n`;
+                        }
+                        displayText += parsedData.info;
+                        
+                        document.getElementById('decryptedData').value = displayText;
+                        document.getElementById('decryptedOutput').classList.remove('hidden');
+                    } catch (error) {
+                        console.error('Decryption error:', error);
+                        alert('Decryption failed. Please check your encrypted message and passphrase.');
+                    }
+                });
+            }
+            
+            // Encryption function using Web Crypto API
+            async function encryptData(data, passphrase) {
+                // Generate a random salt
+                const salt = crypto.getRandomValues(new Uint8Array(16));
+                
+                // Derive a key from the passphrase
+                const keyMaterial = await getKeyMaterial(passphrase);
+                const key = await deriveKey(keyMaterial, salt);
+                
+                // Generate a random IV
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                
+                // Encrypt the data
+                const encryptedContent = await crypto.subtle.encrypt(
+                    {
+                        name: 'AES-GCM',
+                        iv: iv
+                    },
+                    key,
+                    new TextEncoder().encode(data)
+                );
+                
+                // Combine the salt, IV, and encrypted data
+                const encryptedArray = new Uint8Array(encryptedContent);
+                const result = new Uint8Array(salt.length + iv.length + encryptedArray.length);
+                result.set(salt);
+                result.set(iv, salt.length);
+                result.set(encryptedArray, salt.length + iv.length);
+                
+                // Return as base64 string
+                return btoa(String.fromCharCode(...result));
+            }
+            
+            // Decryption function using Web Crypto API
+            async function decryptData(encryptedData, passphrase) {
+                try {
+                    // Convert from base64
+                    const encryptedArray = Uint8Array.from(atob(encryptedData), c => c.charCodeAt(0));
+                    
+                    // Extract salt, IV, and encrypted data
+                    const salt = encryptedArray.slice(0, 16);
+                    const iv = encryptedArray.slice(16, 28);
+                    const encrypted = encryptedArray.slice(28);
+                    
+                    // Derive the key from the passphrase
+                    const keyMaterial = await getKeyMaterial(passphrase);
+                    const key = await deriveKey(keyMaterial, salt);
+                    
+                    // Decrypt the data
+                    const decryptedContent = await crypto.subtle.decrypt(
+                        {
+                            name: 'AES-GCM',
+                            iv: iv
+                        },
+                        key,
+                        encrypted
+                    );
+                    
+                    // Return as string
+                    return new TextDecoder().decode(decryptedContent);
+                } catch (error) {
+                    throw new Error('Decryption failed');
+                }
+            }
+            
+            // Helper function to get key material from passphrase
+            async function getKeyMaterial(passphrase) {
+                return await crypto.subtle.importKey(
+                    'raw',
+                    new TextEncoder().encode(passphrase),
+                    'PBKDF2',
+                    false,
+                    ['deriveBits', 'deriveKey']
+                );
+            }
+            
+            // Helper function to derive a key from key material and salt
+            async function deriveKey(keyMaterial, salt) {
+                return await crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: salt,
+                        iterations: 100000,
+                        hash: 'SHA-256'
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            }
+        });
+    </script>
+</body>
+</html>
